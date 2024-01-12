@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi step form on jQuery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Maven+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 class="form-title">JavaScript Type Conversions Quiz</h1>
+    <form id="myForm" action="" method="post" autocomplete="off">
+      <ul class="step-list">
+        <li class="step" id="step-1">1</li>
+        <li class="step" id="step-2">2</li>
+        <li class="step" id="step-3">3</li>
+        <li class="step" id="step-4">4</li>
+        <li class="step" id="step-5">5</li>
+        <li class="step" id="step-6">6</li>
+        <li class="step" id="step-7">7</li>
+      </ul>
+
+      <div class="tab" id="tab-1">
+        <label for="q1" class ='question-text'>Question 1: <span class="question-name">What will be displayed in the console?</span></label>
+        <code class="code">0 || "0" && {}  </code>
+        
+        <input type="radio" name="q1" value="a" id="q1a" />
+        <label for="q1a">a. {} </label>
+        <input type="radio" name="q1" value="b" id="q1b" />
+        <label for="q1b">b. "0" </label>
+        <input type="radio" name="q1" value="c" id="q1c" />
+        <label for="q1c">c. 0 </label>
+        <input type="radio" name="q1" value="d" id="q1d" />
+        <label for="q1d">d. true</label>
+        <div class="index-btn-wrapper">
+          <div class="index-btn" onclick="run(1, 2);">Next</div>
+        </div>
+      </div>
+
+      <div class="tab" id="tab-2">
+        <p>Contact Info:</p>
+        <input type="text" placeholder="Email" name="email" />
+        <input type="text" placeholder="Phone" name="phone" />
+        <div class="index-btn-wrapper">
+          <div class="index-btn" onclick="run(2, 1);">Previous</div>
+          <div class="index-btn" onclick="run(2, 3);">Next</div>
+        </div>
+      </div>
+
+      <div class="tab" id="tab-3">
+        <p>Birthday:</p>
+        <input type="text" placeholder="dd" name="dd" />
+        <input type="text" placeholder="mm" name="mm" />
+        <input type="text" placeholder="yy" name="yy" />
+        <div class="index-btn-wrapper">
+          <div class="index-btn" onclick="run(3, 2);">Previous</div>
+          <div class="index-btn" onclick="run(3, 4);">Next</div>
+        </div>
+      </div>
+
+      <div class="tab" id="tab-4">
+        <p>Login Info:</p>
+        <input type="text" placeholder="Username" name="username" />
+        <input type="password" placeholder="Password" name="password" />
+        <div class="index-btn-wrapper">
+          <div class="index-btn" onclick="run(4, 3);">Previous</div>
+          <div class="index-btn" onclick="run(4, 5);">Next</div>
+        </div>
+      </div>
+
+      <div class="tab" id="tab-5">
+        <div class="index-btn-wrapper">
+          <div class="index-btn" onclick="run(5, 4);">Previous</div>
+          <button
+            class="index-btn"
+            type="submit"
+            name="submit"
+            style="background: blue"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="index.js"></script>
+  </body>
+</html>
