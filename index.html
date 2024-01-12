@@ -25,15 +25,27 @@
       <div class="tab" id="tab-1">
         <label for="q1" class ='question-text'>Question 1: <span class="question-name">What will be displayed in the console?</span></label>
         <code class="code">0 || "0" && {}  </code>
-        
-        <input type="radio" name="q1" value="a" id="q1a" />
-        <label for="q1a">a. {} </label>
-        <input type="radio" name="q1" value="b" id="q1b" />
-        <label for="q1b">b. "0" </label>
-        <input type="radio" name="q1" value="c" id="q1c" />
-        <label for="q1c">c. 0 </label>
-        <input type="radio" name="q1" value="d" id="q1d" />
-        <label for="q1d">d. true</label>
+        <ul class="input-list">
+          <li class="input-item">
+            <input type="radio" name="radio-item" id="radio-item-one" />
+            <label for="radio-item-one" class="input-label">a. {} </label>
+            
+          </li>
+          <li class="input-item">
+            <input type="radio" name="radio-item" id="radio-item-two" />
+            <label for="radio-item-two" class="input-label">b. "0" </label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="radio-item" id="radio-item-three" />
+            <label for="radio-item-three" class="input-label">c. 0 </label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="radio-item" id="radio-item-four" />
+            <label for="radio-item-four" class="input-label">d. true</label>
+          </li>
+          
+        </ul>
+
         <div class="index-btn-wrapper">
           <div class="index-btn" onclick="run(1, 2);">Next</div>
         </div>
