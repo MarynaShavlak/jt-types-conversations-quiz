@@ -19,12 +19,17 @@ body {
   margin-top: 30px;
 }
 
-form {
+.quiz-form {
   background: #ffffff;
   margin: 100px auto;
   padding: 40px 40px 40px;
   width: 800px;
 }
+
+.tabs-wrap {
+   position: relative;
+}
+
 
 .tab {
   display: flex;
@@ -266,7 +271,26 @@ input[type='text'] {
 
 .submit-btn {
   background-color: #f9a13d;
+  color: #272727;
+   border: none;
+   padding: 10px 20px;
+   font-size: 17px;
+   cursor: pointer;
+   transition: 0.3s;
 }
 .submit-btn:hover {
   color: #f9a13d;
+  background-color: #272727;
+}
+
+.input-text {
+  transition: background-color 0.25s ease-in-out;
+  background-color: #eee;
+  border: none;
+ 
+}
+
+.focused {
+  background-color: #f9db3d;
+  outline: none;
 }
