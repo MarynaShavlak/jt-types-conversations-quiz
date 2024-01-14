@@ -2,6 +2,8 @@ $(document).ready(function () {
   const tabClass = '.tab';
   const indexBtnClass = '.index-btn';
   const indexNextBtnClass = 'index-btn--next';
+  let formValidationMessage = null;
+  
 
   const QUIZ__ANSWER = {
     question1: 'a',
@@ -9,8 +11,8 @@ $(document).ready(function () {
     question3: ['a', 'b', 'd', 'e', 'f'],
     question4: ['a', 'c', 'e', 'f'],
     question5: 'c',
-    question6: 12345,
-    question7: 'baNaNa',
+    question6: '12345',
+    question7: '"baNaNa"',
   };
 
   const userAnswers = {
@@ -22,10 +24,16 @@ $(document).ready(function () {
     question6: null,
     question7: null,
   };
-  // updateQuestionToShow($(tabClass), $('#tab-1'));
+  updateQuestionToShow($(tabClass), $('#tab-1'));
   setFocusedState();
 
   const btns = $(indexBtnClass);
+  const closeModalBtn = $('[data-modal-close]');
+  const backdrop = $('[data-modal]');
+
+  closeModalBtn.click(handleModalClose);
+  backdrop.click(closeModal);
+
   btns.click(function () {
     handleButtonClick($(this));
   });
@@ -36,37 +44,78 @@ $(document).ready(function () {
   });
 
   function handleFormSubmit() {
-    updateTextAnswer(7);
-    compareAnswers();
+    const lastQuestionNumber = $(tabClass).length;
+    updateTextAnswer(lastQuestionNumber);
+    formValidationMessage = validateForm();
+    if (formValidationMessage) {
+      openModal();
+    } else {
+      const result = calculateQuizResult();
+      console.log('result: ', result);
+      showFinalResult(result, lastQuestionNumber);
+
+    }
   }
 
-  function compareAnswers() {
-    const quizAnswersList = Object.values(QUIZ__ANSWER);
-    const userAnswersAList = Object.values(userAnswers);
-    quizAnswersList.forEach((quizAnswer, index) => {
-      let isCorrectAnswer;
-      const isQuizAnswerArray = Array.isArray(quizAnswer);
-      console.log('quizAnswer: ', quizAnswer);
-      const userAnswer = userAnswersAList[index];
-      console.log('userAnswer: ', userAnswer);
+  function validateForm() {
+    const unansweredQuestions = Object.keys(userAnswers)
+      .filter(key => userAnswers[key] === null)
+      .map(key => key.replace('question', ''));
+    console.log('unansweredQuestions: ', unansweredQuestions);
+    if (unansweredQuestions.length > 0) {
+      const message = `Please, answer the questions ${unansweredQuestions.join(
+        ', ',
+      )}.`;
+      return message;
+    }
+  }
 
-      if (isQuizAnswerArray) {
-        isCorrectAnswer = areArraysEqual(quizAnswer, userAnswer);
-      } else {
-        isCorrectAnswer = quizAnswer === userAnswer;
+  function areAnswersEqual(quizAnswer, userAnswer) {
+    if (Array.isArray(quizAnswer)) {
+      return areArraysEqual(quizAnswer, userAnswer);
+    } else {
+      return quizAnswer === userAnswer;
+    }
+  }
+
+  function calculateQuizResult() {
+    let quizResult = 0;
+    const quizAnswersList = Object.values(QUIZ__ANSWER);
+    const userAnswersList = Object.values(userAnswers);
+
+    quizAnswersList.forEach((quizAnswer, index) => {
+      const userAnswer = userAnswersList[index];
+      const isCorrectAnswer = areAnswersEqual(quizAnswer, userAnswer);
+      updateAnswerResultsBlock(index, isCorrectAnswer);
+      if (isCorrectAnswer) {
+        quizResult += 1;
       }
-      console.log('isCorrectAnswer: ', isCorrectAnswer);
-      console.log('__________');
     });
+
+    return quizResult;
+  }
+
+  function updateAnswerResultsBlock(index, isCorrectAnswer) {
+    const answers = $('.answer');
+    const resultAnswerEl = answers.filter(`#answer-${index + 1}`);
+    if (isCorrectAnswer) {
+      resultAnswerEl.addClass('answer--correct');
+    } else {
+      resultAnswerEl.addClass('answer--wrong');
+    }
+  }
+
+  function showFinalResult(result, max) {
+    $('.results-value').text(`${result}/${max}`)
   }
 
   function areArraysEqual(array1, array2) {
-    if (array1.length !== array2.length) {
+    if (array1?.length !== array2?.length) {
       return false;
     }
     const sortedArray1 = array1.slice().sort();
     const sortedArray2 = array2.slice().sort();
-    return sortedArray1.every((value, index) => value === sortedArray2[index]);
+    return sortedArray1?.every((value, index) => value === sortedArray2[index]);
   }
 
   function setFocusedState() {
@@ -129,9 +178,11 @@ $(document).ready(function () {
     const inputSelector =
       "input[type='radio'][name='question" + currentQuestion + "']:checked";
     const radioInput = $(inputSelector);
-    const value = radioInput.val();
-    const questionKey = 'question' + currentQuestion;
-    userAnswers[questionKey] = value;
+    if (radioInput.length !== 0) {
+      const value = radioInput.val();
+      const questionKey = 'question' + currentQuestion;
+      userAnswers[questionKey] = value;
+    }
   }
 
   function updateCheckBoxAnswers(currentQuestion) {
@@ -152,8 +203,27 @@ $(document).ready(function () {
     const inputSelector =
       'input[type="text"][name="question' + currentQuestion + '"]';
     const textInput = $(inputSelector);
-    const value = textInput.val();
+    const value = textInput.val().trim();
+    if (value === '') return;
     const questionKey = 'question' + currentQuestion;
     userAnswers[questionKey] = value;
+  }
+
+  function closeModal() {
+    $('body').removeClass('modal-open');
+    backdrop.addClass('backdrop--hidden');
+    formValidationMessage = null;
+  }
+
+  function handleModalClose(e) {
+    e.stopPropagation();
+    closeModal();
+  }
+
+  function openModal() {
+    console.log('open modal');
+    $('body').addClass('modal-open');
+    backdrop.removeClass('backdrop--hidden');
+    $('.modal__text').text(formValidationMessage);
   }
 });

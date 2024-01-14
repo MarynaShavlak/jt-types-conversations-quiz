@@ -32,7 +32,7 @@
         <li class="step" id="step-7">7</li>
       </ul>
       <div class="tabs-wrap">
-        <!-- <div class="tab" id="tab-1">
+        <div class="tab" id="tab-1">
           <label class="question-text"
             >Question 1:
             <span class="question-name"
@@ -291,7 +291,7 @@
               Next
             </button>
           </div>
-        </div> -->
+        </div>
         <div class="tab" id="tab-6">
           <label class="question-text"
             >Question 6:
@@ -301,12 +301,13 @@
           >
           <div class="note-block">
             <i class="fa-solid fa-circle-info note-icon"></i>
-            <div><p class="note">
-              Enclose answers of type 'String' within double brackets ("some
-              string").
-            </p>
-            <p class="note">For all other types, no brackets are needed.</p></div>
-            
+            <div>
+              <p class="note">
+                Enclose answers of type 'String' within double brackets ("some
+                string").
+              </p>
+              <p class="note">For all other types, no brackets are needed.</p>
+            </div>
           </div>
           <code class="code">+"12345" + null</code>
 
@@ -331,12 +332,13 @@
           >
           <div class="note-block">
             <i class="fa-solid fa-circle-info note-icon"></i>
-            <div><p class="note">
-              Enclose answers of type 'String' within double brackets ("some
-              string").
-            </p>
-            <p class="note">For all other types, no brackets are needed.</p></div>
-            
+            <div>
+              <p class="note">
+                Enclose answers of type 'String' within double brackets ("some
+                string").
+              </p>
+              <p class="note">For all other types, no brackets are needed.</p>
+            </div>
           </div>
 
           <code class="code">"b" + "a" + +"a" + "a"</code>
@@ -348,13 +350,34 @@
 
           <div class="index-btn-wrapper">
             <button class="index-btn" type="button">Previous</button>
-            <button class="submit-btn" type="submit" name="submit">
+            <button class="submit-btn" type="submit" name="submit" data-modal-open>
               Submit
             </button>
           </div>
         </div>
       </div>
+      <div class="results">
+        <p class="results-header">Thanks for participating in the quiz!</p>
+        <p class="results-text">Your result is: <span class="results-value"></span></p>
+        <ul class="answer-list">
+          <li class="answer" id="answer-1">1</li>
+          <li class="answer" id="answer-2">2</li>
+          <li class="answer " id="answer-3">3</li>
+          <li class="answer" id="answer-4">4</li>
+          <li class="answer" id="answer-5">5</li>
+          <li class="answer" id="answer-6">6</li>
+          <li class="answer" id="answer-7">7</li>
+        </ul>
+      </div>
     </form>
+    <div class="backdrop backdrop--hidden" data-modal>
+      <div class="modal">
+        <p class="modal__text"></p>
+        <button type="button" class="modal__btn-close" data-modal-close>
+          <i class="fa-solid fa-xmark close-modal"></i>
+        </button>
+      </div>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
