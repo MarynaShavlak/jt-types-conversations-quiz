@@ -6,19 +6,8 @@ $(document).ready(function () {
   const QUIZ__ANSWER = {
     question1: 'a',
     question2: 'c',
-    question3: [
-      'a',
-      'b',
-      'd',
-      'e',
-      'f',
-    ],
-    question4: [
-      'a',
-      "c",
-      'e',
-      'f',
-    ],
+    question3: ['a', 'b', 'd', 'e', 'f'],
+    question4: ['a', 'c', 'e', 'f'],
     question5: 'c',
     question6: 12345,
     question7: 'baNaNa',
@@ -33,7 +22,7 @@ $(document).ready(function () {
     question6: null,
     question7: null,
   };
-  updateQuestionToShow($(tabClass), $('#tab-1'));
+  // updateQuestionToShow($(tabClass), $('#tab-1'));
   setFocusedState();
 
   const btns = $(indexBtnClass);
@@ -55,18 +44,29 @@ $(document).ready(function () {
     const quizAnswersList = Object.values(QUIZ__ANSWER);
     const userAnswersAList = Object.values(userAnswers);
     quizAnswersList.forEach((quizAnswer, index) => {
+      let isCorrectAnswer;
+      const isQuizAnswerArray = Array.isArray(quizAnswer);
       console.log('quizAnswer: ', quizAnswer);
       const userAnswer = userAnswersAList[index];
       console.log('userAnswer: ', userAnswer);
-      const isTheSame  = quizAnswer === userAnswer;
-      console.log('isTheSame: ', isTheSame);
-      const isQuizAnswerArray = Array.isArray(quizAnswer);
+
       if (isQuizAnswerArray) {
-        const isFullAnswer = quizAnswer?.length === userAnswer?.length;
-        console.log('isFullAnswer: ', isFullAnswer);
+        isCorrectAnswer = areArraysEqual(quizAnswer, userAnswer);
+      } else {
+        isCorrectAnswer = quizAnswer === userAnswer;
       }
+      console.log('isCorrectAnswer: ', isCorrectAnswer);
       console.log('__________');
     });
+  }
+
+  function areArraysEqual(array1, array2) {
+    if (array1.length !== array2.length) {
+      return false;
+    }
+    const sortedArray1 = array1.slice().sort();
+    const sortedArray2 = array2.slice().sort();
+    return sortedArray1.every((value, index) => value === sortedArray2[index]);
   }
 
   function setFocusedState() {
