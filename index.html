@@ -4,16 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Multi step form on jQuery</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Maven+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Maven+Pro:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <h1 class="form-title">JavaScript Type Conversions Quiz</h1>
     <form id="myForm" action="" method="post" autocomplete="off">
       <ul class="step-list">
-        <li class="step" id="step-1">1</li>
+        <li class="step step--current" id="step-1">1</li>
         <li class="step" id="step-2">2</li>
         <li class="step" id="step-3">3</li>
         <li class="step" id="step-4">4</li>
@@ -23,78 +26,258 @@
       </ul>
 
       <div class="tab" id="tab-1">
-        <label for="q1" class ='question-text'>Question 1: <span class="question-name">What will be displayed in the console?</span></label>
-        <code class="code">0 || "0" && {}  </code>
+        <label  class="question-text"
+          >Question 1:
+          <span class="question-name"
+            >What will be displayed in the console?</span
+          ></label
+        >
+        <code class="code">0 || "0" && {} </code>
         <ul class="input-list">
           <li class="input-item">
-            <input type="radio" name="radio-item" id="radio-item-one" />
-            <label for="radio-item-one" class="input-label">a. {} </label>
-            
+            <input type="radio" name="question-1" id="q1__v1" />
+            <label for="q1__v1" class="input-label"><span class="variant">a.</span> {} </label>
           </li>
           <li class="input-item">
-            <input type="radio" name="radio-item" id="radio-item-two" />
-            <label for="radio-item-two" class="input-label">b. "0" </label>
+            <input type="radio" name="question-1" id="q1__v2" />
+            <label for="q1__v2" class="input-label"><span class="variant">b.</span> "0" </label>
           </li>
           <li class="input-item">
-            <input type="radio" name="radio-item" id="radio-item-three" />
-            <label for="radio-item-three" class="input-label">c. 0 </label>
+            <input type="radio" name="question-1" id="q1__v3" />
+            <label for="q1__v3" class="input-label"><span class="variant">c.</span> 0 </label>
           </li>
           <li class="input-item">
-            <input type="radio" name="radio-item" id="radio-item-four" />
-            <label for="radio-item-four" class="input-label">d. true</label>
+            <input type="radio" name="question-1" id="q1__v4" />
+            <label for="q1__v4" class="input-label"><span class="variant">d.</span> true</label>
           </li>
-          
         </ul>
 
         <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(1, 2);">Next</div>
+          <button class="index-btn index-btn--next" type="button">
+            Next
+          </button>
         </div>
       </div>
 
       <div class="tab" id="tab-2">
-        <p>Contact Info:</p>
-        <input type="text" placeholder="Email" name="email" />
-        <input type="text" placeholder="Phone" name="phone" />
+        <label  class="question-text"
+          >Question 2:
+          <span class="question-name"
+            >What will be displayed in the console?</span
+          ></label
+        >
+        <code class="code">!+[]+[]+![] </code>
+        <ul class="input-list">
+          <li class="input-item">
+            <input type="radio" name="question-2" id="q2__v1" />
+            <label for="q2__v1" class="input-label"><span class="variant">a.</span> ["object Object"] </label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-2" id="q2__v2" />
+            <label for="q2__v2" class="input-label"><span class="variant">b.</span> "object Object" </label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-2" id="q2__v3" />
+            <label for="q2__v3" class="input-label"><span class="variant">c.</span> "truefalse"</label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-2" id="q2__v4" />
+            <label for="q2__v4" class="input-label"><span class="variant">d.</span> 0 </label>
+          </li>
+        </ul>
+
         <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(2, 1);">Previous</div>
-          <div class="index-btn" onclick="run(2, 3);">Next</div>
+          <button class="index-btn" type="button">
+            Previous
+          </button>
+          <button class="index-btn index-btn--next" type="button">
+            Next
+          </button>
         </div>
       </div>
 
       <div class="tab" id="tab-3">
-        <p>Birthday:</p>
-        <input type="text" placeholder="dd" name="dd" />
-        <input type="text" placeholder="mm" name="mm" />
-        <input type="text" placeholder="yy" name="yy" />
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(3, 2);">Previous</div>
-          <div class="index-btn" onclick="run(3, 4);">Next</div>
-        </div>
-      </div>
+        <label class="question-text"
+          >Question 3:
+          <span class="question-name"
+            >What expressions(choose all) will show <code>true</code>?</span
+          ></label
+        >
+        <ul class="input-list input-list--complex">
+          <li class="input-item">
+            <input type="checkbox" name="question-3" id="q3__v1" />
+            <label for="q3__v1" class="input-label"><span class="variant">a.</span> <code>null == null</code> </label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-3" id="q3__v2" />
+            <label for="q3__v2" class="input-label"><span class="variant">b.</span>  <code>null == undefined </code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-3" id="q3__v3" />
+            <label for="q3__v3" class="input-label"><span class="variant">c.</span> <code>NaN == NaN</code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-3" id="q3__v4" />
+            <label for="q3__v4" class="input-label"><span class="variant">d.</span> <code>[1] > null</code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-3" id="q3__v5" />
+            <label for="q3__v5" class="input-label"><span class="variant">e.</span> <code>['x'] == 'x'</code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-3" id="q3__v6" />
+            <label for="q3__v6" class="input-label"><span class="variant"></span>f.</span> <code>null >= 0</code></label>
+          </li>
+        </ul>
 
-      <div class="tab" id="tab-4">
-        <p>Login Info:</p>
-        <input type="text" placeholder="Username" name="username" />
-        <input type="password" placeholder="Password" name="password" />
         <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(4, 3);">Previous</div>
-          <div class="index-btn" onclick="run(4, 5);">Next</div>
-        </div>
-      </div>
-
-      <div class="tab" id="tab-5">
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(5, 4);">Previous</div>
-          <button
-            class="index-btn"
-            type="submit"
-            name="submit"
-            style="background: blue"
-          >
-            Submit
+          <button class="index-btn" type="button">
+            Previous
+          </button>
+          <button class="index-btn index-btn--next" type="button">
+            Next
           </button>
         </div>
       </div>
+      <div class="tab" id="tab-4">
+        <label class="question-text"
+          >Question 4:
+          <span class="question-name"
+            >What expressions(choose all) will show <code>false</code>?</span
+          ></label
+        >
+        <ul class="input-list input-list--complex">
+          <li class="input-item">
+            <input type="checkbox" name="question-4" id="q4__v1" />
+            <label for="q4__v1" class="input-label"><span class="variant">a.</span> <code>Boolean(NaN);</code> </label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-4" id="q4__v2" />
+            <label for="q4__v2" class="input-label"><span class="variant">b.</span>  <code>Boolean([])</code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-4" id="q4__v3" />
+            <label for="q4__v3" class="input-label"><span class="variant">c.</span> <code>false == 'false'
+            </code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-4" id="q4__v4" />
+            <label for="q4__v4" class="input-label"><span class="variant">d.</span> <code>!!(function(){})</code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-4" id="q4__v5" />
+            <label for="q4__v5" class="input-label"><span class="variant">e.</span> <code>[1,2,3] == [1,2,3]</code></label>
+          </li>
+          <li class="input-item">
+            <input type="checkbox" name="question-4" id="q4__v6" />
+            <label for="q4__v6" class="input-label"><span class="variant">f.</span> <code>null == ''</code></label>
+          </li>
+        </ul>
+
+        <div class="index-btn-wrapper">
+          <button class="index-btn" type="button">
+            Previous
+          </button>
+          <button class="index-btn index-btn--next" type="button">
+            Next
+          </button>
+        </div>
+      </div>
+      <div class="tab" id="tab-5">
+        <label class="question-text"
+          >Question 5:
+          <span class="question-name"
+            >What will be result of code below?</span
+          ></label
+        >
+        <code class="code code--wide">alert(alert(null) && alert(3) || alert(+undefined && !1) && alert((new Date(!0)).toDateString()) || 4)</code>
+
+        <ul class="input-list input-list--complex-2">
+          <li class="input-item">
+            <input type="radio" name="question-5" id="q5__v1" />
+            <label for="q5__v1" class="input-label"><span class="variant">a.</span> <code>null -> Thu Jan 01 1970 -> 4</code> </label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-5" id="q5__v2" />
+            <label for="q5__v2" class="input-label"><span class="variant">b.</span>  <code>undefined -> Fri Jan 02 1970 -> 4</code></label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-5" id="q5__v3" />
+            <label for="q5__v3" class="input-label"><span class="variant">c.</span> <code>null -> NaN -> 4 </code></label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-5" id="q5__v4" />
+            <label for="q5__v4" class="input-label"><span class="variant">d.</span> <code>null -> 3 -> 0 -> Thu Jan 01 1970 -> 4</code></label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-5" id="q5__v5" />
+            <label for="q5__v5" class="input-label"><span class="variant">e.</span> <code>3 -> false -> Invalid Date -> 4</code></label>
+          </li>
+          <li class="input-item">
+            <input type="radio" name="question-5" id="q5__v6" />
+            <label for="q5__v6" class="input-label"><span class="variant">f.</span> <code>null -> undefined -> Thu Jan 01 1970</code></label>
+          </li>
+        </ul>
+
+        <div class="index-btn-wrapper">
+          <button class="index-btn" type="button">
+            Previous
+          </button>
+          <button class="index-btn index-btn--next" type="button">
+            Next
+          </button>
+        </div>
+      </div>
+      <div class="tab" id="tab-6">
+        <label  class="question-text"
+          >Question 6:
+          <span class="question-name"
+            >What will be the result of expression?</span
+          ></label
+        >
+        <code class="code">+"12345" + null</code>
+        
+        <label  class="input-label--toType">Answer:
+          <input type="text" name="question-6"  />
+        </label>
+       
+        <div class="index-btn-wrapper">
+          <button class="index-btn" type="button">
+            Previous
+          </button>
+          <button class="index-btn index-btn--next" type="button">
+            Next
+          </button>
+        </div>
+      </div>
+      <div class="tab" id="tab-7">
+        <label  class="question-text"
+          >Question 7:
+          <span class="question-name"
+            >What will be the result of expression?</span
+          ></label
+        >
+        <code class="code">"b" + "a" + +"a" + "a"</code>
+        
+        <label  class=" input-label--toType">Answer:
+          <input type="text" name="question-7"  />
+        </label>
+       
+        <div class="index-btn-wrapper">
+          <button class="index-btn" type="button">
+            Previous
+          </button>
+          <button
+          class="index-btn submit-btn"
+          type="submit"
+          name="submit">
+          Submit
+        </button>
+        </div>
+      </div>
+ 
+
+      
     </form>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"

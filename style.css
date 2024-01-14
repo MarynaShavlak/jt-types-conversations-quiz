@@ -23,7 +23,7 @@ form {
   background: #ffffff;
   margin: 100px auto;
   padding: 40px 40px 40px;
-  width: 70%;
+  width: 800px;
 }
 
 .tab {
@@ -45,14 +45,20 @@ form {
 
 .code {
   font-size: 26px;
-  line-height: 100%;
   background-color: #eee;
-  padding: 0.2em;
-  letter-spacing: -0.05em;
   border-radius: 5px;
   margin: 0 auto;
   width: fit-content;
   padding: 20px;
+  margin-bottom: 30px;
+}
+
+
+.code--wide {
+  font-size: 12px;
+  line-height: 2;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 input {
   margin: 10px 0;
@@ -65,17 +71,22 @@ input {
 
 .index-btn-wrapper {
   display: flex;
+  margin-top: 40px;
+  justify-content: space-between;
 }
 
 .index-btn {
-  margin: 20px 15px 0 0;
-  background: #f9db3d;
+ background: #f9db3d;
   color: #272727;
   border: none;
   padding: 10px 20px;
   font-size: 17px;
   cursor: pointer;
   transition: 0.3s;
+}
+
+.index-btn--next{
+  margin-left: auto;
 }
 
 .index-btn:hover {
@@ -85,12 +96,13 @@ input {
 
 .step-list {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
   margin-bottom: 40px;
 }
 
 .step {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,22 +114,42 @@ input {
   background: #f9db3d;
   border-radius: 50%;
   opacity: 0.25;
+  transition: opacity 300ms cubic-bezier(1, 0, 0, 1);
+}
+
+.step--current {
+  opacity: 1;
+}
+
+.step:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: -35px;
+  height: 2px;
+  background-color: #f9db3d;
+  width: 35px;
+  opacity: 0.5;
+}
+
+.step--current:not(:first-child)::before {
+  opacity: 1;
 }
 
 .input-list {
   label {
-padding-left: 10px;
-font-size: 20px;
+    padding-left: 10px;
+    font-size: 20px;
     &:before {
       border-radius: 0;
       transform: rotate(45deg);
     }
-    &:after{
+    &:after {
       border-radius: 0;
     }
   }
 
-  input[type='radio'] {
+  input[type='radio'],
+  input[type='checkbox'] {
     &:checked + label {
       &:after {
         transform: rotate(45deg);
@@ -129,22 +161,26 @@ font-size: 20px;
 
 .input-item {
   position: relative;
-  padding: 20px 0 20px 40px;
+  padding: 20px 0 20px 20px;
   text-align: left;
+  
+ 
 }
 
 .input-label {
   cursor: pointer;
 }
 
-input[type='radio'] {
+input[type='radio'],
+input[type='checkbox'] {
   position: absolute;
   top: 0;
   left: -9999px;
   visibility: hidden;
 }
 
-input[type='radio']:checked + label:after {
+input[type='radio']:checked + label:after,
+input[type='checkbox']:checked + label:after{
   transform: translate3d(0, 0, 0);
   opacity: 1;
 }
@@ -158,26 +194,79 @@ input[type='radio']:checked + label:after {
 }
 .input-label:before {
   left: 0;
-  width: 30px;
-  height: 30px;
-  margin: -15px 0 0;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0;
   background: #f7f7f7;
   box-shadow: 0 0 1px grey;
 }
 .input-label:after {
   left: 5px;
-  width: 20px;
-  height: 20px;
-  margin: -10px 0 0;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0;
   opacity: 0;
   background: #f9db3d;
   transform: translate3d(-40px, 0, 0) scale(0.5);
   transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
 }
 
-
 .input-list {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 30px;
+  
+}
+
+
+.input-list--complex .input-item{
+  flex: 1 0 calc(33.33% - 10px); 
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.input-list--complex label {
+  font-size: 16px;
+}
+.input-list--complex code {
+  font-size: 16px;
+}
+
+.input-list--complex-2 {
+  display: flex;
+  flex-wrap: wrap;
+ /* column-gap: 50px; */
+}
+
+.input-list--complex-2 code,
+.input-list--complex-2 label
+ {
+  font-size: 14px;
+}
+
+.input-list--complex-2 .input-item:nth-child(2n+1){
+ width: 285px;
+}
+.input-list--complex-2 .input-item:nth-child(2n){
+ width: 340px;
+}
+
+.variant {
+   font-weight: 600;;
+}
+
+input[type='text'] {
+ width: 300px;
+}
+
+.input-label--toType {
+  margin: 0 auto;
+  font-size: 16px;
+}
+
+.submit-btn {
+  background-color: #f9a13d;
+}
+.submit-btn:hover {
+  color: #f9a13d;
 }

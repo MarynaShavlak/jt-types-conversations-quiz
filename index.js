@@ -1,32 +1,47 @@
 $(document).ready(function () {
+  const tabClass = '.tab';
+  const indexBtnClass = '.index-btn';
+  const indexNextBtnClass = 'index-btn--next';
+  const displayFlex = 'flex';
+  const displayNone = 'none';
 
-  $(".tab").css("display", "none");
-  $("#tab-1").css("display", "flex");
+  updateQuestionToShow($(tabClass), $('#tab-1'));
 
-  function run(hideTab, showTab){
-    if(hideTab < showTab){ // If not press previous button
-      // Validation if press next button
-      var currentTab = 0;
-      x = $('#tab-'+hideTab);
-      y = $(x).find("input")
-      for (i = 0; i < y.length; i++){
-        if (y[i].value == ""){
-          $(y[i]).css("background", "#ffdddd");
-          return false;
-        }
-      }
-    }
+  const btns = $(indexBtnClass);
+  btns.click(function () {
+    handleButtonClick($(this));
+  });
 
-    // Progress bar
-    for (i = 1; i < showTab; i++){
-      $("#step-"+i).css("opacity", "1");
-    }
-
-    // Switch tab
-    $("#tab-"+hideTab).css("display", "none");
-    $("#tab-"+showTab).css("display", "flex");
-    $("input").css("background", "#fff");
+  function getTabOrder(tabID) {
+    const match = tabID.match(/\d+/);
+    return match ? parseInt(match[0]) : null;
   }
-})
 
+  function handleButtonClick(btn) {
+    const questionID = btn.closest(tabClass).attr('id');
+    const currentQuestion = getTabOrder(questionID);
+    const isNextBtn = btn.hasClass(indexNextBtnClass);
+    const showQuestion = isNextBtn ? currentQuestion + 1 : currentQuestion - 1;
 
+    updateProgressBar(isNextBtn, currentQuestion, showQuestion);
+    updateQuestionToShow(
+      $(`#tab-${currentQuestion}`),
+      $(`#tab-${showQuestion}`),
+    );
+  }
+
+  function updateQuestionToShow(questionsToHide, questionToShow) {
+    questionsToHide.css('display', displayNone);
+    questionToShow.css('display', displayFlex);
+  }
+
+  function updateProgressBar(isNextBtn, current, toShow) {
+    if (isNextBtn) {
+      for (let i = 1; i <= toShow; i++) {
+        $(`#step-${i}`).addClass('step--current');
+      }
+    } else {
+      $(`#step-${current}`).removeClass('step--current');
+    }
+  }
+});
