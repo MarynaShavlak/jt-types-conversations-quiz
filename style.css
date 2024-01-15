@@ -128,6 +128,7 @@ input {
 
 .step {
   position: relative;
+  cursor:pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,6 +145,16 @@ input {
 
 .step--current {
   opacity: 1;
+}
+
+
+
+.step:not(.step--current):hover {
+  opacity: 1;
+}
+
+.step:not(.step--current):hover::before{
+  opacity: 0.5;
 }
 
 .step:not(:first-child)::before {

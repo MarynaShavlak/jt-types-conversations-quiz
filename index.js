@@ -2,9 +2,11 @@ import { QUIZ__ANSWER, QUIZ__QUESTIONS } from './data.js';
 
 $(document).ready(function () {
   const tabClass = '.tab';
+  const stepClass = '.step';
   const indexBtnClass = '.index-btn';
   const indexNextBtnClass = 'index-btn--next';
   const btns = $(indexBtnClass);
+  const steps = $(stepClass);
   const closeModalBtn = $('[data-modal-close]');
   const backdrop = $('[data-modal]');
   let formValidationMessage = null;
@@ -19,7 +21,7 @@ $(document).ready(function () {
     question7: null,
   };
 
-  updateQuestionToShow($(tabClass), $('#tab-1'));
+  updateQuestionToShow($('#tab-1'));
   setFocusedState();
   addEventHandlers();
 
@@ -30,6 +32,11 @@ $(document).ready(function () {
     btns.click(function () {
       handleButtonClick($(this));
     });
+
+    steps.click(function () {
+      handleStepClick($(this));
+    });
+
 
     $('.submit-btn').click(function (e) {
       e.preventDefault();
@@ -245,18 +252,30 @@ $(document).ready(function () {
     return match ? parseInt(match[0]) : null;
   }
 
+function updateInterface(currentQuestion, showQuestion) {
+  updateProgressBar(showQuestion);
+  updateUserAnswersObj(currentQuestion);
+  updateQuestionToShow($(`#tab-${showQuestion}`),
+  );
+}
+
+
   function handleButtonClick(btn) {
     const questionID = btn.closest(tabClass).attr('id');
     const currentQuestion = getTabOrder(questionID);
     const isNextBtn = btn.hasClass(indexNextBtnClass);
     const showQuestion = isNextBtn ? currentQuestion + 1 : currentQuestion - 1;
+    updateInterface(currentQuestion, showQuestion)
+   
+  }
 
-    updateProgressBar(isNextBtn, currentQuestion, showQuestion);
-    updateUserAnswersObj(currentQuestion);
-    updateQuestionToShow(
-      $(`#tab-${currentQuestion}`),
-      $(`#tab-${showQuestion}`),
-    );
+
+  function handleStepClick(stepEl) {
+      const activeStepID = $('.step--current:last').attr('id');
+      const currentQuestion = getTabOrder(activeStepID);
+      const showQuestion = getTabOrder(stepEl.attr('id'));
+      if (currentQuestion === showQuestion) return;
+      updateInterface(currentQuestion, showQuestion)
   }
 
   function handleBackBtnClick() {
@@ -274,8 +293,8 @@ $(document).ready(function () {
     $('#quiz-form')[0].reset();
   }
 
-  function updateQuestionToShow(questionsToHide, questionToShow) {
-    questionsToHide.hide();
+  function updateQuestionToShow(questionToShow) {
+    $('.tab').hide();
     questionToShow.show();
     $('.results').hide();
   }
@@ -286,21 +305,19 @@ $(document).ready(function () {
     $('.results').show();
   }
   function hideResultsBlock() {
-    updateQuestionToShow($(tabClass), $('#tab-1'));
+    updateQuestionToShow( $('#tab-1'));
     setInitialProgressBar();
     $('.tabs-wrap').show();
     $('.step-list').show();
     $('.results').hide();
   }
 
-  function updateProgressBar(isNextBtn, current, toShow) {
-    if (isNextBtn) {
-      for (let i = 1; i <= toShow; i++) {
+  function updateProgressBar(toShow) {
+    console.log('toShow: ', toShow);
+    $('.step').removeClass('step--current');
+       for (let i = 1; i <= toShow; i++) {
         $(`#step-${i}`).addClass('step--current');
       }
-    } else {
-      $(`#step-${current}`).removeClass('step--current');
-    }
   }
 
   function setInitialProgressBar() {
