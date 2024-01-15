@@ -40,6 +40,7 @@ body.modal-open {
   font-family: 'Maven Pro', sans-serif;
 }
 
+
 .question-text {
   align-self: center;
   font-weight: 700;
@@ -67,6 +68,7 @@ body.modal-open {
   font-size: 24px;
   color: rgb(130, 128, 128);
 }
+
 .code {
   font-size: 26px;
   background-color: #eee;
@@ -496,6 +498,11 @@ td {
    position: relative;
 }
 
+
+.opened {
+   background-color: rgba(249, 218, 61, 0.5);
+}
+
 .info-icon {
   position: absolute;
   cursor:pointer;
@@ -505,9 +512,54 @@ td {
   color: #aaaaaa;
   transform: translate(-10px, -50%);
   transition: color 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
-
 }
 
 .info-icon:hover {
    color: #39a439;
 }
+
+.chosen {
+  color: #39a439;
+}
+
+.answer-info-block {
+   font-family: 'Maven Pro', sans-serif;
+ 
+}
+
+
+.answer-info-text {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.answer-info-name {
+  font-weight: 400;
+}
+.answer-info-code {
+  display: block;
+  font-size: 14px;
+  background-color: #eee;
+  border-radius: 5px;
+  margin: 0 auto;
+  width: fit-content;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+.answer-info-list {
+  margin-top: 10px;
+   display: flex;
+   justify-content: space-between;
+   flex-wrap: wrap;
+}
+
+.answer-info-list li {
+  background-color: #eee;
+  border-radius: 5px;
+  padding:5px;
+}
+

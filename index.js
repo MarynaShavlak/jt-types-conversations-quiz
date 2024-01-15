@@ -1,4 +1,4 @@
-import { QUIZ__ANSWER, QUIZ__QUESTIONS } from "./data.js";
+import { QUIZ__ANSWER, QUIZ__QUESTIONS } from './data.js';
 
 $(document).ready(function () {
   const tabClass = '.tab';
@@ -8,8 +8,6 @@ $(document).ready(function () {
   const closeModalBtn = $('[data-modal-close]');
   const backdrop = $('[data-modal]');
   let formValidationMessage = null;
-
- 
 
   const userAnswers = {
     question1: null,
@@ -104,31 +102,76 @@ $(document).ready(function () {
         wrongAnswersList.push(wrongAnswerObject);
       }
     });
-    showCorrectAnswersTable(wrongAnswersList);
-    const infoIcons = $(".info-icon");
-    console.log('infoIcons: ', infoIcons);
-    infoIcons.click(function() {
-      handleInfoIconClick($(this));
-    })
-
+    setResultsInfo(wrongAnswersList);
     return quizResult;
   }
 
+  function setResultsInfo(wrongAnswersList) {
+    showCorrectAnswersTable(wrongAnswersList);
+    $('.info-icon').click(function () {
+      handleInfoIconClick($(this));
+    });
+  }
 
-function handleInfoIconClick(icon) {
-  const questionNumber = icon.attr('data-icon');
-  const row = icon.closest('tr');
-  const markup = '<p style="display: none;">new abstract</p>';
-  row.after(markup);
-  row.next('p').slideDown('slow', function() {
-    console.log('questionNumber:', questionNumber);
-  });
+  function handleInfoIconClick(icon) {
+    const row = icon.closest('tr');
+    const answerInfoBlock = row.next('tr');
+    if (answerInfoBlock.is(':hidden')) {
+      answerInfoBlock.find('div').css('display', 'none');
+      answerInfoBlock.css('display', 'table-row').find('div').slideDown(300);
+    } else {
+      answerInfoBlock.find('div').slideUp(300, function () {
+        answerInfoBlock.hide();
+      });
+    }
+    row.toggleClass('opened');
+    icon.toggleClass('chosen');
+  }
 
-}
+  function generateCodeMarkup(selectedQuestion, questionNumber) {
+    const { text, code, answer } = selectedQuestion;
+    return `
+        <tr  class="answer-info-block changeable" style="display:none;">
+          <td colspan="3">
+          <div>
+          <p class="answer-info-text">
+              Question ${questionNumber}:
+              <span class="answer-info-name">${text}</span>
+            </p>
+            <code class="answer-info-code">${code}</code>
+            <p class="answer-info-result">
+              Correct answer:
+              <span class="answer-info-value">${answer}</span>
+            </p>
+          </div>
+            
+          </td>
+        </tr>`;
+  }
+
+  function generateListMarkup(selectedQuestion, questionNumber) {
+    const { text, answer } = selectedQuestion;
+    return `
+        <tr  class="answer-info-block changeable" style="display:none;">
+          <td colspan="3">
+          <div>
+          <p class="answer-info-text">
+          Question ${questionNumber}:
+          <span class="answer-info-name">${text}</span>
+        </p>
+        <p class="answer-info-result"> Correct answer:</p>
+        <ul class="answer-info-list">
+          ${answer.map(el => `<li> ${el}</li>`).join('')}
+        </ul> </div>
+            
+          </td>
+        </tr>`;
+  }
 
   function showCorrectAnswersTable(wrongAnswersList) {
-    if (wrongAnswersList.length > 0) {
-      const markup = `
+    if (wrongAnswersList.length === 0) return;
+    const tableRowsMarkup = wrongAnswersList.map(generateMarkupForRow).join('');
+    const tableMarkup = `
     <div class="info">
       <p class="results-text table-title">Correct answers</p>
       <table>
@@ -140,25 +183,29 @@ function handleInfoIconClick(icon) {
           </tr>
         </thead>
         <tbody>
-          ${wrongAnswersList
-            .map(
-              ({ question, wrong, correct }) => `
-            <tr>
-              <td data-id="question">${question}</td>
-              <td data-id="wrong">${wrong}</td>
-              <td data-id="correct"><span>${correct}</span> <i class="fa-regular fa-circle-question info-icon" data-icon="${question}"></i></td>
-            </tr>
-          `,
-            )
-            .join('')}
+        ${tableRowsMarkup}
         </tbody>
       </table>
     </div>
   `;
 
-      $('.answer-list').after(markup);
-    }
+    $('.answer-list').after(tableMarkup);
   }
+
+  function generateMarkupForRow ({ question, wrong, correct })  {
+    const selectedQuestion = QUIZ__QUESTIONS[`question${question}`];
+    const { code } = selectedQuestion;
+    const markup = code
+      ? generateCodeMarkup(selectedQuestion, question)
+      : generateListMarkup(selectedQuestion, question);
+
+    return `<tr>
+      <td data-id="question">${question}</td>
+      <td data-id="wrong">${wrong}</td>
+      <td data-id="correct"><span>${correct}</span> <i class="fa-regular fa-circle-question info-icon" data-icon="${question}"></i></td>
+    </tr>
+    ${markup}`;
+  };
 
   function updateAnswerResultsBlock(index, isCorrectAnswer) {
     const answers = $('.answer');
@@ -239,6 +286,8 @@ function handleInfoIconClick(icon) {
     $('.results').show();
   }
   function hideResultsBlock() {
+    updateQuestionToShow($(tabClass), $('#tab-1'));
+    setInitialProgressBar();
     $('.tabs-wrap').show();
     $('.step-list').show();
     $('.results').hide();
@@ -252,6 +301,11 @@ function handleInfoIconClick(icon) {
     } else {
       $(`#step-${current}`).removeClass('step--current');
     }
+  }
+
+  function setInitialProgressBar() {
+    $('.step').removeClass('step--current');
+    $('#step-1').addClass('step--current');
   }
 
   function updateUserAnswersObj(currentQuestion) {
