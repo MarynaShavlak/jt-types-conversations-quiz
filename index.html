@@ -350,7 +350,12 @@
 
           <div class="index-btn-wrapper">
             <button class="index-btn" type="button">Previous</button>
-            <button class="submit-btn" type="submit" name="submit" data-modal-open>
+            <button
+              class="submit-btn"
+              type="submit"
+              name="submit"
+              data-modal-open
+            >
               Submit
             </button>
           </div>
@@ -358,11 +363,17 @@
       </div>
       <div class="results">
         <p class="results-header">Thanks for participating in the quiz!</p>
-        <p class="results-text">Your result is: <span class="results-value"></span></p>
+        <button class="back-btn" type="reset">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back</span>
+        </button>
+        <p class="results-text">
+          Your result is: <span class="results-value"></span>
+        </p>
         <ul class="answer-list">
           <li class="answer" id="answer-1">1</li>
           <li class="answer" id="answer-2">2</li>
-          <li class="answer " id="answer-3">3</li>
+          <li class="answer" id="answer-3">3</li>
           <li class="answer" id="answer-4">4</li>
           <li class="answer" id="answer-5">5</li>
           <li class="answer" id="answer-6">6</li>
@@ -384,6 +395,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="index.js"></script>
+    <script src="index.js" type="module"></script>
   </body>
 </html>

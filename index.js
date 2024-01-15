@@ -1,19 +1,15 @@
+import { QUIZ__ANSWER, QUIZ__QUESTIONS } from "./data.js";
+
 $(document).ready(function () {
   const tabClass = '.tab';
   const indexBtnClass = '.index-btn';
   const indexNextBtnClass = 'index-btn--next';
+  const btns = $(indexBtnClass);
+  const closeModalBtn = $('[data-modal-close]');
+  const backdrop = $('[data-modal]');
   let formValidationMessage = null;
-  
 
-  const QUIZ__ANSWER = {
-    question1: 'a',
-    question2: 'c',
-    question3: ['a', 'b', 'd', 'e', 'f'],
-    question4: ['a', 'c', 'e', 'f'],
-    question5: 'c',
-    question6: '12345',
-    question7: '"baNaNa"',
-  };
+ 
 
   const userAnswers = {
     question1: null,
@@ -24,24 +20,28 @@ $(document).ready(function () {
     question6: null,
     question7: null,
   };
+
   updateQuestionToShow($(tabClass), $('#tab-1'));
   setFocusedState();
+  addEventHandlers();
 
-  const btns = $(indexBtnClass);
-  const closeModalBtn = $('[data-modal-close]');
-  const backdrop = $('[data-modal]');
+  function addEventHandlers() {
+    closeModalBtn.click(handleModalClose);
+    backdrop.click(closeModal);
 
-  closeModalBtn.click(handleModalClose);
-  backdrop.click(closeModal);
+    btns.click(function () {
+      handleButtonClick($(this));
+    });
 
-  btns.click(function () {
-    handleButtonClick($(this));
-  });
-
-  $('.submit-btn').click(function (e) {
-    e.preventDefault();
-    handleFormSubmit();
-  });
+    $('.submit-btn').click(function (e) {
+      e.preventDefault();
+      handleFormSubmit();
+    });
+    $('.back-btn').click(function (e) {
+      e.preventDefault();
+      handleBackBtnClick();
+    });
+  }
 
   function handleFormSubmit() {
     const lastQuestionNumber = $(tabClass).length;
@@ -51,9 +51,8 @@ $(document).ready(function () {
       openModal();
     } else {
       const result = calculateQuizResult();
-      console.log('result: ', result);
       showFinalResult(result, lastQuestionNumber);
-
+      showResultsBlock();
     }
   }
 
@@ -61,7 +60,6 @@ $(document).ready(function () {
     const unansweredQuestions = Object.keys(userAnswers)
       .filter(key => userAnswers[key] === null)
       .map(key => key.replace('question', ''));
-    console.log('unansweredQuestions: ', unansweredQuestions);
     if (unansweredQuestions.length > 0) {
       const message = `Please, answer the questions ${unansweredQuestions.join(
         ', ',
@@ -78,21 +76,88 @@ $(document).ready(function () {
     }
   }
 
+  function getWrongAnswerObject(questionNumber, quizAnswer, userAnswer) {
+    return {
+      question: questionNumber,
+      correct: quizAnswer,
+      wrong: userAnswer,
+    };
+  }
+
   function calculateQuizResult() {
     let quizResult = 0;
     const quizAnswersList = Object.values(QUIZ__ANSWER);
     const userAnswersList = Object.values(userAnswers);
-
+    const wrongAnswersList = [];
     quizAnswersList.forEach((quizAnswer, index) => {
       const userAnswer = userAnswersList[index];
       const isCorrectAnswer = areAnswersEqual(quizAnswer, userAnswer);
       updateAnswerResultsBlock(index, isCorrectAnswer);
       if (isCorrectAnswer) {
         quizResult += 1;
+      } else {
+        const wrongAnswerObject = getWrongAnswerObject(
+          index + 1,
+          quizAnswer,
+          userAnswer,
+        );
+        wrongAnswersList.push(wrongAnswerObject);
       }
     });
+    showCorrectAnswersTable(wrongAnswersList);
+    const infoIcons = $(".info-icon");
+    console.log('infoIcons: ', infoIcons);
+    infoIcons.click(function() {
+      handleInfoIconClick($(this));
+    })
 
     return quizResult;
+  }
+
+
+function handleInfoIconClick(icon) {
+  const questionNumber = icon.attr('data-icon');
+  const row = icon.closest('tr');
+  const markup = '<p style="display: none;">new abstract</p>';
+  row.after(markup);
+  row.next('p').slideDown('slow', function() {
+    console.log('questionNumber:', questionNumber);
+  });
+
+}
+
+  function showCorrectAnswersTable(wrongAnswersList) {
+    if (wrongAnswersList.length > 0) {
+      const markup = `
+    <div class="info">
+      <p class="results-text table-title">Correct answers</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Your Answer</th>
+            <th>Correct Answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${wrongAnswersList
+            .map(
+              ({ question, wrong, correct }) => `
+            <tr>
+              <td data-id="question">${question}</td>
+              <td data-id="wrong">${wrong}</td>
+              <td data-id="correct"><span>${correct}</span> <i class="fa-regular fa-circle-question info-icon" data-icon="${question}"></i></td>
+            </tr>
+          `,
+            )
+            .join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+      $('.answer-list').after(markup);
+    }
   }
 
   function updateAnswerResultsBlock(index, isCorrectAnswer) {
@@ -106,7 +171,7 @@ $(document).ready(function () {
   }
 
   function showFinalResult(result, max) {
-    $('.results-value').text(`${result}/${max}`)
+    $('.results-value').text(`${result}/${max}`);
   }
 
   function areArraysEqual(array1, array2) {
@@ -147,9 +212,36 @@ $(document).ready(function () {
     );
   }
 
+  function handleBackBtnClick() {
+    resetForm();
+    resetUserAnswers();
+    hideResultsBlock();
+  }
+
+  function resetUserAnswers() {
+    for (const key in userAnswers) {
+      userAnswers[key] = null;
+    }
+  }
+  function resetForm() {
+    $('#quiz-form')[0].reset();
+  }
+
   function updateQuestionToShow(questionsToHide, questionToShow) {
     questionsToHide.hide();
     questionToShow.show();
+    $('.results').hide();
+  }
+
+  function showResultsBlock() {
+    $('.tabs-wrap').hide();
+    $('.step-list').hide();
+    $('.results').show();
+  }
+  function hideResultsBlock() {
+    $('.tabs-wrap').show();
+    $('.step-list').show();
+    $('.results').hide();
   }
 
   function updateProgressBar(isNextBtn, current, toShow) {
@@ -221,7 +313,6 @@ $(document).ready(function () {
   }
 
   function openModal() {
-    console.log('open modal');
     $('body').addClass('modal-open');
     backdrop.removeClass('backdrop--hidden');
     $('.modal__text').text(formValidationMessage);
