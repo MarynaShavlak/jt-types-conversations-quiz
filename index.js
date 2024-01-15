@@ -37,7 +37,6 @@ $(document).ready(function () {
       handleStepClick($(this));
     });
 
-
     $('.submit-btn').click(function (e) {
       e.preventDefault();
       handleFormSubmit();
@@ -199,7 +198,7 @@ $(document).ready(function () {
     $('.answer-list').after(tableMarkup);
   }
 
-  function generateMarkupForRow ({ question, wrong, correct })  {
+  function generateMarkupForRow({ question, wrong, correct }) {
     const selectedQuestion = QUIZ__QUESTIONS[`question${question}`];
     const { code } = selectedQuestion;
     const markup = code
@@ -212,7 +211,7 @@ $(document).ready(function () {
       <td data-id="correct"><span>${correct}</span> <i class="fa-regular fa-circle-question info-icon" data-icon="${question}"></i></td>
     </tr>
     ${markup}`;
-  };
+  }
 
   function updateAnswerResultsBlock(index, isCorrectAnswer) {
     const answers = $('.answer');
@@ -252,30 +251,26 @@ $(document).ready(function () {
     return match ? parseInt(match[0]) : null;
   }
 
-function updateInterface(currentQuestion, showQuestion) {
-  updateProgressBar(showQuestion);
-  updateUserAnswersObj(currentQuestion);
-  updateQuestionToShow($(`#tab-${showQuestion}`),
-  );
-}
-
+  function updateInterface(currentQuestion, showQuestion) {
+    updateProgressBar(showQuestion);
+    updateUserAnswersObj(currentQuestion);
+    updateQuestionToShow($(`#tab-${showQuestion}`));
+  }
 
   function handleButtonClick(btn) {
     const questionID = btn.closest(tabClass).attr('id');
     const currentQuestion = getTabOrder(questionID);
     const isNextBtn = btn.hasClass(indexNextBtnClass);
     const showQuestion = isNextBtn ? currentQuestion + 1 : currentQuestion - 1;
-    updateInterface(currentQuestion, showQuestion)
-   
+    updateInterface(currentQuestion, showQuestion);
   }
 
-
   function handleStepClick(stepEl) {
-      const activeStepID = $('.step--current:last').attr('id');
-      const currentQuestion = getTabOrder(activeStepID);
-      const showQuestion = getTabOrder(stepEl.attr('id'));
-      if (currentQuestion === showQuestion) return;
-      updateInterface(currentQuestion, showQuestion)
+    const activeStepID = $('.step--current:last').attr('id');
+    const currentQuestion = getTabOrder(activeStepID);
+    const showQuestion = getTabOrder(stepEl.attr('id'));
+    if (currentQuestion === showQuestion) return;
+    updateInterface(currentQuestion, showQuestion);
   }
 
   function handleBackBtnClick() {
@@ -305,7 +300,7 @@ function updateInterface(currentQuestion, showQuestion) {
     $('.results').show();
   }
   function hideResultsBlock() {
-    updateQuestionToShow( $('#tab-1'));
+    updateQuestionToShow($('#tab-1'));
     setInitialProgressBar();
     $('.tabs-wrap').show();
     $('.step-list').show();
@@ -313,11 +308,10 @@ function updateInterface(currentQuestion, showQuestion) {
   }
 
   function updateProgressBar(toShow) {
-    console.log('toShow: ', toShow);
     $('.step').removeClass('step--current');
-       for (let i = 1; i <= toShow; i++) {
-        $(`#step-${i}`).addClass('step--current');
-      }
+    for (let i = 1; i <= toShow; i++) {
+      $(`#step-${i}`).addClass('step--current');
+    }
   }
 
   function setInitialProgressBar() {
